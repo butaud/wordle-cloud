@@ -1,0 +1,20 @@
+{
+  "name": "wordle-cloud-svc",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Carter Butaud (cabutaud@microsoft.com)",
+  "license": "UNLICENSED",
+  "scripts": {
+    "start": "tsc && node bin/server.js",
+    "test": "tsc && node bin/test/data.js",
+    "setup": "node setup.js"
+  },
+  "dependencies": {
+    "@types/node": "^20.12.7",
+    "sqlite3": "^5.1.7",
+    "typescript": "^5.5.0-dev.20240401"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.2"
+  }
+}

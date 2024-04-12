@@ -1,0 +1,6 @@
+{
+  "name": "wordle-cloud-web",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "UNLICENSED"
+}
