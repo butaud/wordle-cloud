@@ -3,12 +3,43 @@ import sqlite3 from "sqlite3";
 
 export class SqlitePuzzleDao implements IPuzzleDao {
   private db: sqlite3.Database;
-  constructor() {
+  constructor(dbLocation: string) {
     // initialize sqlite database
-    this.db = new sqlite3.Database("./bin/my_database.db");
+    const db = new sqlite3.Database(dbLocation);
+    this.db = db;
   }
 
-  private getPuzzleForDate(date: Date): Promise<number | undefined> {
+  async init(): Promise<void> {
+    await this.setupTables();
+  }
+
+  private setupTables(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.db.serialize(() => {
+        this.db.run(
+          "CREATE TABLE IF NOT EXISTS puzzles (id INTEGER PRIMARY KEY, date TEXT NOT NULL)"
+        );
+
+        // insert a seed puzzle
+        this.db.run(
+          "INSERT OR IGNORE INTO puzzles (id, date) VALUES (1028, '2024-04-12')"
+        );
+
+        // create the solves table
+        this.db.run(
+          "CREATE TABLE IF NOT EXISTS solves (id INTEGER PRIMARY KEY, puzzle_id INTEGER NOT NULL, name TEXT NOT NULL)"
+        );
+
+        // create the solve_rows table
+        this.db.run(
+          "CREATE TABLE IF NOT EXISTS solve_rows (id INTEGER PRIMARY KEY, solve_id INTEGER NOT NULL, row TEXT NOT NULL)"
+        );
+        resolve();
+      });
+    });
+  }
+
+  private async getPuzzleForDate(date: Date): Promise<number | undefined> {
     const dateStr = date.toISOString().split("T")[0];
     return new Promise((resolve, reject) => {
       this.db.get(
@@ -150,6 +181,24 @@ export class SqlitePuzzleDao implements IPuzzleDao {
           }
         }
       );
+    });
+  }
+
+  clearSolves(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.db.run("DELETE FROM solves", (err) => {
+        if (err) {
+          reject(err);
+        } else {
+          this.db.run("DELETE FROM solve_rows", (err) => {
+            if (err) {
+              reject(err);
+            } else {
+              resolve();
+            }
+          });
+        }
+      });
     });
   }
 }

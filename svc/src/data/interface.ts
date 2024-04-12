@@ -13,7 +13,9 @@ export type Solve = {
   solveRows: SolveRow[];
 };
 export interface IPuzzleDao {
+  init(): Promise<void>;
   getPuzzle(date: Date): Promise<number>;
   getSolves(puzzleId: number): Promise<Solve[]>;
   createSolve(puzzleId: number, solve: Omit<Solve, "id">): Promise<Solve>;
+  clearSolves(): Promise<void>;
 }

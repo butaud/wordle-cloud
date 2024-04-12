@@ -2,8 +2,11 @@ import { Solve } from "../data/interface";
 import { SqlitePuzzleDao } from "../data/sqliteDao";
 
 (async () => {
-  const sqliteDao = new SqlitePuzzleDao();
+  const sqliteDao = new SqlitePuzzleDao("./bin/test.db");
+  await sqliteDao.init();
+  sqliteDao.clearSolves();
   const today = new Date();
+  console.log("today is", today);
   const puzzleId = await sqliteDao.getPuzzle(today);
 
   console.log("today's puzzle id is", puzzleId);
