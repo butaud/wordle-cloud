@@ -1,18 +1,19 @@
 import express from "express";
+import cors from "cors";
 import { SqlitePuzzleDao } from "./data/sqliteDao";
 import { Solve } from "./data/interface";
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 (async () => {
-  const sqliteDao = new SqlitePuzzleDao("./bin/prod.db");
+  const sqliteDao = new SqlitePuzzleDao("./bin/test.db");
   await sqliteDao.init();
-
-  app.get("/todayPuzzle", async (req, res) => {
-    const today = new Date();
-    const puzzleId = await sqliteDao.getPuzzle(today);
-    res.json({ puzzleId });
+  app.get("/puzzle", async (req, res) => {
+    const date = new Date(req.query.date as string);
+    const puzzleId = await sqliteDao.getPuzzle(date);
+    res.json(puzzleId);
   });
 
   app.get("/solves/:puzzleId", async (req, res) => {
@@ -28,7 +29,7 @@ app.use(express.json());
     res.json(addedSolve);
   });
 
-  app.listen(3000, () => {
-    console.log("Server is running on port 3000");
+  app.listen(3001, () => {
+    console.log("Server is running on port 3001");
   });
 })();
