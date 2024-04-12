@@ -4,6 +4,7 @@ import "./App.css";
 import { PuzzleClient } from "./data/puzzleClient";
 import { Solve, SolveRow } from "./data/interface";
 import { SolveForm } from "./SolveForm";
+import { Cloud } from "./Cloud";
 
 const puzzleClient = new PuzzleClient("http://localhost:3001");
 const date = new Date();
@@ -38,18 +39,7 @@ function App() {
     <div className="App">
       <h1>Puzzle: {puzzleId}</h1>
       <h2>Solves</h2>
-      <ul>
-        {solves.map((solve) => (
-          <li key={solve.id}>
-            {solve.name}
-            <ul>
-              {solve.solveRows.map((row, i) => (
-                <li key={i}>{row.join(" ")}</li>
-              ))}
-            </ul>
-          </li>
-        ))}
-      </ul>
+      <Cloud solves={solves} />
       <h2>Add Your Solve</h2>
       <SolveForm onSubmit={onSolveFormSubmit} />
     </div>

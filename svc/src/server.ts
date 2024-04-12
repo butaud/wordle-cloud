@@ -8,7 +8,7 @@ app.use(express.json());
 app.use(cors());
 
 (async () => {
-  const sqliteDao = new SqlitePuzzleDao("./bin/test.db");
+  const sqliteDao = new SqlitePuzzleDao("./bin/prod.db");
   await sqliteDao.init();
   app.get("/puzzle", async (req, res) => {
     const date = new Date(req.query.date as string);

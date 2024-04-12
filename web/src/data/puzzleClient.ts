@@ -14,7 +14,7 @@ export class PuzzleClient {
   }
 
   async getSolves(puzzleId: number): Promise<Solve[]> {
-    const response = await fetch(`${this.baseUrl}/solves?puzzleId=${puzzleId}`);
+    const response = await fetch(`${this.baseUrl}/solves/${puzzleId}`);
     const solves = await response.json();
     return solves;
   }
