@@ -5,6 +5,33 @@ type SolveFormProps = {
   onSubmit: (name: string, solveRows: SolveRow[]) => void;
 };
 
+const blank = "⬜";
+const green = "🟩";
+const yellow = "🟨";
+
+const parseRow = (row: string): SolveRow => {
+  return [...row].map((cell) => {
+    switch (cell) {
+      case green:
+        return "G";
+      case yellow:
+        return "Y";
+      default:
+        return "";
+    }
+  }) as SolveRow;
+};
+
+const extractSolveRowStrings = (solve: string): string[] => {
+  return solve
+    .split("\n")
+    .map((row) => row.trim())
+    .filter(
+      (row) =>
+        row.includes(green) || row.includes(yellow) || row.includes(blank)
+    );
+};
+
 export const SolveForm: FC<SolveFormProps> = ({ onSubmit }) => {
   return (
     <form
@@ -15,9 +42,7 @@ export const SolveForm: FC<SolveFormProps> = ({ onSubmit }) => {
           .value;
         const solve = (form.elements.namedItem("solve") as HTMLTextAreaElement)
           .value;
-        const solveRows = solve
-          .split("\n")
-          .map((row) => row.trim().split(" ") as SolveRow);
+        const solveRows = extractSolveRowStrings(solve).map(parseRow);
         onSubmit(name, solveRows);
       }}
     >
