@@ -1,0 +1,9 @@
+table.cloud {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table.cloud td {
+  padding: 10px;
+  border: 1px solid #ccc;
+}
