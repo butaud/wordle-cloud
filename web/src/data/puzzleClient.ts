@@ -23,16 +23,13 @@ export class PuzzleClient {
     puzzleId: number,
     solve: Omit<Solve, "id">
   ): Promise<Solve> {
-    const response = await fetch(
-      `${this.baseUrl}/solves?puzzleId=${puzzleId}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(solve),
-      }
-    );
+    const response = await fetch(`${this.baseUrl}/solves/${puzzleId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(solve),
+    });
     const newSolve = await response.json();
     return newSolve;
   }
