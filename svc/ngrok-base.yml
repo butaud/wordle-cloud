@@ -1,0 +1,8 @@
+# create an ngrok-local.yml with an authtoken: <auth token> value
+version: 2
+tunnels:
+  wordle_cloud:
+    proto: http
+    hostname: standup8f411.ngrok.io
+    addr: 127.0.0.1:3001
+    
