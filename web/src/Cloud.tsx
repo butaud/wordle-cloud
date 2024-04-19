@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, Fragment, useState } from "react";
 import { Solve, SolveRowItem } from "./data/interface";
 
 import "./Cloud.css";
@@ -66,7 +66,7 @@ export const Cloud: FC<CloudProps> = ({ solves }) => {
   return (
     <div className="cloud">
       {displayTable.map((row, i) => (
-        <>
+        <Fragment key={i}>
           {row.cells.map((cell, j) => (
             <SquareCell key={j} cell={cell} totalSolves={solves.length} />
           ))}
@@ -81,7 +81,7 @@ export const Cloud: FC<CloudProps> = ({ solves }) => {
               />
             ))}
           </div>
-        </>
+        </Fragment>
       ))}
     </div>
   );
