@@ -78,6 +78,7 @@ export const Cloud: FC<CloudProps> = ({ solves }) => {
                 onHover={() => setNameFilter(solver)}
                 onLeave={() => setNameFilter(undefined)}
                 size={row.solvers.length <= 3 ? "regular" : "small"}
+                bold={solver === nameFilter}
               />
             ))}
           </div>

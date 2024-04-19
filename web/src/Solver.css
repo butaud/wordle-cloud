@@ -47,3 +47,8 @@
 .solver.green {
   border-color: hsl(90, 100%, 41%);
 }
+
+.solver.bold {
+  font-weight: bold;
+  border-color: black;
+}

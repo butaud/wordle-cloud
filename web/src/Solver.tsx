@@ -7,6 +7,7 @@ export type SolverProps = {
   name: string;
   size: "big" | "regular" | "small" | "tiny";
   cellItem?: SolveRowItem;
+  bold?: boolean;
   onHover?: () => void;
   onLeave?: () => void;
 };
@@ -23,6 +24,7 @@ export const Solver: FC<SolverProps> = ({
   name,
   size,
   cellItem,
+  bold,
   onHover,
   onLeave,
 }) => {
@@ -30,7 +32,7 @@ export const Solver: FC<SolverProps> = ({
     cellItem === "G" ? "green" : cellItem === "Y" ? "yellow" : "";
   return (
     <div
-      className={`solver ${size} ${highlightClass}`}
+      className={`solver ${size} ${highlightClass} ${bold ? "bold" : ""}`}
       title={name}
       onMouseOver={onHover}
       onFocus={onHover}
