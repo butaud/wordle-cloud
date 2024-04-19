@@ -21,22 +21,21 @@ export const Cloud: FC<CloudProps> = ({ solves }) => {
     }
   }
   return (
-    <table className="cloud">
-      <tbody>
-        {tableRows.map((row, i) => (
-          <tr key={i}>
-            {row.map((cell, j) => (
-              <SquareCell
-                key={j}
-                items={cell}
-                totalSolves={solves.length}
-                rowSolves={rowCounts[i]}
-              />
-            ))}
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <div className="cloud">
+      {tableRows.map((row, i) => (
+        <>
+          {row.map((cell, j) => (
+            <SquareCell
+              key={j}
+              items={cell}
+              totalSolves={solves.length}
+              rowSolves={rowCounts[i]}
+            />
+          ))}
+          <div className="names">Bob Joe Mary</div>
+        </>
+      ))}
+    </div>
   );
 };
 
@@ -98,5 +97,9 @@ const SquareCell: FC<{
   const backgroundColor = colorForCell(items, rowSolves, totalSolves);
   console.log(items, backgroundColor);
   const contents = items.map((item) => item || "").join("");
-  return <td style={{ backgroundColor: backgroundColor }}>{contents}</td>;
+  return (
+    <div className="cell" style={{ backgroundColor: backgroundColor }}>
+      {contents}
+    </div>
+  );
 };

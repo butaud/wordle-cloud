@@ -1,9 +1,25 @@
-table.cloud {
-  width: 100%;
-  border-collapse: collapse;
+.cloud {
+  display: grid;
+  grid-template-columns: repeat(5, 50px) 1fr;
+  grid-template-rows: repeat(6, 50px);
+  grid-gap: 4px;
+  height: 350px;
+  width: 450px;
+  margin: 0 auto;
+  /* offset to center the grid, ignoring the last column which is 180px wide */
+  position: relative;
+  left: 90px;
 }
 
-table.cloud td {
-  padding: 10px;
+.cloud .cell {
   border: 1px solid #ccc;
+  display: grid;
+  place-content: center;
+  aspect-ratio: 1 / 1;
+}
+
+.cloud .names {
+  display: grid;
+  align-content: center;
+  justify-content: start;
 }
