@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { SolveRow } from "./data/interface";
 
 import "./SolveForm.css";
@@ -35,20 +35,38 @@ const extractSolveRowStrings = (solve: string): string[] => {
 };
 
 export const SolveForm: FC<SolveFormProps> = ({ onSubmit }) => {
+  const [error, setError] = useState<string | null>(null);
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError(null);
+    const form = e.target as HTMLFormElement;
+    const name = (form.elements.namedItem("name") as HTMLInputElement).value;
+    const solve = (form.elements.namedItem("solve") as HTMLTextAreaElement)
+      .value;
+    const solveRows = extractSolveRowStrings(solve).map(parseRow);
+    if (
+      solveRows.length < 1 ||
+      solveRows.length > 6 ||
+      solveRows.some((row) => row.length !== 5)
+    ) {
+      setError("Invalid solve format");
+      return;
+    }
+    if (
+      solveRows.some(
+        (row, index) =>
+          row.every((cell) => cell === "G") && index !== solveRows.length - 1
+      )
+    ) {
+      setError("No guesses allowed after a full solve row");
+      return;
+    }
+    onSubmit(name, solveRows);
+    form.reset();
+  };
   return (
-    <form
-      className="solve-form"
-      onSubmit={(e) => {
-        e.preventDefault();
-        const form = e.target as HTMLFormElement;
-        const name = (form.elements.namedItem("name") as HTMLInputElement)
-          .value;
-        const solve = (form.elements.namedItem("solve") as HTMLTextAreaElement)
-          .value;
-        const solveRows = extractSolveRowStrings(solve).map(parseRow);
-        onSubmit(name, solveRows);
-      }}
-    >
+    <form className="solve-form" onSubmit={handleSubmit}>
+      {error && <p className="error">{error}</p>}
       <label>
         Name:
         <input type="text" name="name" />
