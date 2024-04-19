@@ -2,6 +2,7 @@ import { FC } from "react";
 import { Solve, SolveRowItem } from "./data/interface";
 
 import "./Cloud.css";
+import { Solver } from "./Solver";
 
 export type CloudProps = {
   solves: Solve[];
@@ -55,14 +56,17 @@ export const Cloud: FC<CloudProps> = ({ solves }) => {
       {displayTable.map((row, i) => (
         <>
           {row.cells.map((cell, j) => (
-            <SquareCell
-              key={j}
-              items={cell.entries.map((entry) => entry.item)}
-              totalSolves={solves.length}
-              rowSolves={row.solvers.length}
-            />
+            <SquareCell key={j} cell={cell} totalSolves={solves.length} />
           ))}
-          <div className="names">{row.solvers.join(" ")}</div>
+          <div className="names">
+            {row.solvers.map((solver) => (
+              <Solver
+                key={solver}
+                name={solver}
+                size={row.solvers.length <= 3 ? "regular" : "small"}
+              />
+            ))}
+          </div>
         </>
       ))}
     </div>
@@ -90,16 +94,12 @@ const setPoints: Point[] = [
 const bins = setPoints.length - 1;
 const binDivisor = 2 / bins;
 
-const colorForCell = (
-  items: SolveRowItem[],
-  totalSolves: number,
-  rowSolves: number
-): string => {
+const colorForCell = (items: SolveRowItem[], totalSolves: number): string => {
   if (items.length === 0) {
     return "white";
   }
 
-  const alpha = rowSolves / totalSolves;
+  const alpha = items.filter((item) => item !== "").length / totalSolves;
 
   const cellTotal = (
     items.map((item) => (item === "G" ? 2 : item === "Y" ? 1 : 0)) as number[]
@@ -120,16 +120,24 @@ const interpolate = (a: number, b: number, t: number) => {
 };
 
 const SquareCell: FC<{
-  items: SolveRowItem[];
+  cell: DisplayCell;
   totalSolves: number;
-  rowSolves: number;
-}> = ({ items, rowSolves, totalSolves }) => {
-  const backgroundColor = colorForCell(items, rowSolves, totalSolves);
-  console.log(items, backgroundColor);
-  const contents = items.map((item) => item || "").join("");
+}> = ({ cell, totalSolves }) => {
+  const backgroundColor = colorForCell(
+    cell.entries.map((entry) => entry.item),
+    totalSolves
+  );
+  const contentfulEntries = cell.entries.filter((entry) => entry.item !== "");
   return (
     <div className="cell" style={{ backgroundColor: backgroundColor }}>
-      {contents}
+      {contentfulEntries.map((entry) => (
+        <Solver
+          key={entry.name}
+          name={entry.name}
+          cellItem={entry.item}
+          size={contentfulEntries.length > 6 ? "tiny" : "small"}
+        />
+      ))}
     </div>
   );
 };

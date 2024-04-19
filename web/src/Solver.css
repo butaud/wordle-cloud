@@ -1,0 +1,49 @@
+.solver {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid #ccc;
+  border-radius: 100%;
+  margin: 2px;
+  box-sizing: content-box;
+  cursor: pointer;
+  background-color: hsla(0, 0%, 100%, 0.5);
+}
+
+.solver.big {
+  width: 30px;
+  height: 30px;
+  font-size: 15px;
+  line-height: 15px;
+}
+
+.solver.regular {
+  width: 25px;
+  height: 25px;
+  font-size: 12px;
+  line-height: 12px;
+}
+
+.solver.small {
+  width: 20px;
+  height: 20px;
+  font-size: 10px;
+  line-height: 10px;
+}
+
+.solver.tiny {
+  width: 15px;
+  height: 15px;
+  font-size: 7px;
+  line-height: 7px;
+  border-width: 1px;
+  margin: 1px;
+}
+
+.solver.yellow {
+  border-color: hsl(60, 100%, 59%);
+}
+
+.solver.green {
+  border-color: hsl(90, 100%, 41%);
+}

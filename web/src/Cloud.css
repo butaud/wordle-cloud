@@ -1,9 +1,9 @@
 .cloud {
   display: grid;
-  grid-template-columns: repeat(5, 70px) 1fr;
-  grid-template-rows: repeat(6, 70px);
+  grid-template-columns: repeat(5, 80px) 1fr;
+  grid-template-rows: repeat(6, 80px);
   grid-gap: 5px;
-  width: 555px;
+  width: 605px;
   margin: 0 auto;
   /* offset to center the grid, ignoring the last column which is 180px wide */
   position: relative;
@@ -13,13 +13,16 @@
 .cloud .cell {
   border: 1px solid #ccc;
   border-radius: 5px;
-  display: grid;
   place-content: center;
   aspect-ratio: 1 / 1;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 
 .cloud .names {
-  display: grid;
-  align-content: center;
-  justify-content: start;
+  display: flex;
+  flex-direction: row;
+  align-self: center;
+  width: 100%;
 }
