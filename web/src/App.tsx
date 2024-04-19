@@ -5,7 +5,7 @@ import { Solve, SolveRow } from "./data/interface";
 import { SolveForm } from "./SolveForm";
 import { Cloud } from "./Cloud";
 
-const puzzleClient = new PuzzleClient("http://localhost:3001");
+const puzzleClient = new PuzzleClient("https://standup8f411.ngrok.io");
 const date = new Date();
 
 function App() {

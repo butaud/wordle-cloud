@@ -7,7 +7,8 @@
   "scripts": {
     "start": "tsc && node bin/server.js",
     "test": "tsc && node bin/test/data.js",
-    "setup": "node setup.js"
+    "setup": "node setup.js",
+    "ngrok": "ngrok http --region=us --subdomain=standup8f411 3001"
   },
   "dependencies": {
     "@types/node": "^20.12.7",
