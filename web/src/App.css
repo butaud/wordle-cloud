@@ -50,3 +50,12 @@
     grid-template-columns: 1fr;
   }
 }
+
+.App .nav {
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+  justify-content: space-between;
+  width: 90%;
+  margin: 0 auto;
+}

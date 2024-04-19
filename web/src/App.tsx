@@ -51,6 +51,19 @@ function App() {
   return (
     <div className="App">
       <h1>Puzzle: {puzzleId}</h1>
+      {puzzleId !== null && (
+        <div className="nav">
+          {puzzleId !== 1 && (
+            <a href={`?puzzleId=${puzzleId - 1}`}>{`<< ${puzzleId - 1}`}</a>
+          )}
+          {puzzleIdFromUrl !== null && (
+            <>
+              <a href={"."}>{`Today`}</a>
+              <a href={`?puzzleId=${puzzleId + 1}`}>{`${puzzleId + 1} >>`}</a>
+            </>
+          )}
+        </div>
+      )}
       <div className="content">
         <section>
           <h2>Add Your Solve</h2>
