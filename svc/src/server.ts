@@ -29,7 +29,8 @@ app.use(cors());
     res.json(addedSolve);
   });
 
-  app.listen(80, () => {
-    console.log("Server is running on port 80");
+  const port = process.env.PORT || 3001;
+  app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
   });
 })();
