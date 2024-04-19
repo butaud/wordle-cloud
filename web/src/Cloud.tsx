@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { Solve, SolveRowItem } from "./data/interface";
 
 import "./Cloud.css";
@@ -24,18 +24,29 @@ type DisplayRow = {
 
 type DisplayTable = DisplayRow[];
 
-const displayTableFromSolves = (solves: Solve[]): DisplayTable => {
+const displayTableFromSolves = (
+  solves: Solve[],
+  nameFilter: string | undefined
+): DisplayTable => {
+  const solvesFiltered = solves.filter((solve) => {
+    return nameFilter === undefined || solve.name === nameFilter;
+  });
   const table: DisplayTable = [];
   for (let i = 0; i < 6; i++) {
     const cells: DisplayCell[] = [];
     const solvers = new Set<string>();
     for (let j = 0; j < 5; j++) {
       const cell: DisplayCell = { entries: [] };
+      // we want to keep the solvers for the row unfiltered
       for (let solve of solves) {
         if (solve.solveRows[i]) {
           if (solve.solveRows[i].every((item) => item === "G")) {
             solvers.add(solve.name);
           }
+        }
+      }
+      for (let solve of solvesFiltered) {
+        if (solve.solveRows[i]) {
           const item = solve.solveRows[i][j];
           if (item !== undefined) {
             cell.entries.push({ name: solve.name, item });
@@ -50,7 +61,8 @@ const displayTableFromSolves = (solves: Solve[]): DisplayTable => {
 };
 
 export const Cloud: FC<CloudProps> = ({ solves }) => {
-  const displayTable = displayTableFromSolves(solves);
+  const [nameFilter, setNameFilter] = useState<string | undefined>();
+  const displayTable = displayTableFromSolves(solves, nameFilter);
   return (
     <div className="cloud">
       {displayTable.map((row, i) => (
@@ -63,6 +75,8 @@ export const Cloud: FC<CloudProps> = ({ solves }) => {
               <Solver
                 key={solver}
                 name={solver}
+                onHover={() => setNameFilter(solver)}
+                onLeave={() => setNameFilter(undefined)}
                 size={row.solvers.length <= 3 ? "regular" : "small"}
               />
             ))}
