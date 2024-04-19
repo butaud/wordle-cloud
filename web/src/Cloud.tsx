@@ -7,32 +7,60 @@ export type CloudProps = {
   solves: Solve[];
 };
 
-export const Cloud: FC<CloudProps> = ({ solves }) => {
-  const tableRows: SolveRowItem[][][] = [];
-  const rowCounts = [0, 0, 0, 0, 0, 0];
+type SolverCellEntry = {
+  name: string;
+  item: SolveRowItem;
+};
+
+type DisplayCell = {
+  entries: SolverCellEntry[];
+};
+
+type DisplayRow = {
+  cells: DisplayCell[];
+  solvers: string[];
+};
+
+type DisplayTable = DisplayRow[];
+
+const displayTableFromSolves = (solves: Solve[]): DisplayTable => {
+  const table: DisplayTable = [];
   for (let i = 0; i < 6; i++) {
-    tableRows[i] = [];
-    rowCounts[i] = solves.filter((solve) => solve.solveRows[i]).length;
+    const cells: DisplayCell[] = [];
+    const solvers = new Set<string>();
     for (let j = 0; j < 5; j++) {
-      tableRows[i][j] = [];
+      const cell: DisplayCell = { entries: [] };
       for (let solve of solves) {
-        tableRows[i][j].push(solve.solveRows[i]?.[j]);
+        if (solve.solveRows[i]) {
+          solvers.add(solve.name);
+          const item = solve.solveRows[i][j];
+          if (item !== undefined) {
+            cell.entries.push({ name: solve.name, item });
+          }
+        }
       }
+      cells.push(cell);
     }
+    table.push({ cells, solvers: Array.from(solvers) });
   }
+  return table;
+};
+
+export const Cloud: FC<CloudProps> = ({ solves }) => {
+  const displayTable = displayTableFromSolves(solves);
   return (
     <div className="cloud">
-      {tableRows.map((row, i) => (
+      {displayTable.map((row, i) => (
         <>
-          {row.map((cell, j) => (
+          {row.cells.map((cell, j) => (
             <SquareCell
               key={j}
-              items={cell}
+              items={cell.entries.map((entry) => entry.item)}
               totalSolves={solves.length}
-              rowSolves={rowCounts[i]}
+              rowSolves={row.solvers.length}
             />
           ))}
-          <div className="names">Bob Joe Mary</div>
+          <div className="names">{row.solvers.join(" ")}</div>
         </>
       ))}
     </div>
