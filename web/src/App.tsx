@@ -10,16 +10,30 @@ const puzzleClient = new PuzzleClient("http://localhost:3001");
 const date = new Date();
 
 function App() {
-  const [puzzleId, setPuzzleId] = React.useState<number | null>(null);
+  const puzzleIdFromUrlStr = new URLSearchParams(window.location.search).get(
+    "puzzleId"
+  );
+  const puzzleIdFromUrl = puzzleIdFromUrlStr
+    ? parseInt(puzzleIdFromUrlStr)
+    : null;
+  const [puzzleId, setPuzzleId] = React.useState<number | null>(
+    puzzleIdFromUrl
+  );
   const [solves, setSolves] = React.useState<Solve[]>([]);
   React.useEffect(() => {
-    puzzleClient.getPuzzle(date).then((puzzleId) => {
-      setPuzzleId(puzzleId);
-      puzzleClient.getSolves(puzzleId).then((solves) => {
+    if (!puzzleIdFromUrl) {
+      puzzleClient.getPuzzle(date).then((puzzleId) => {
+        setPuzzleId(puzzleId);
+        puzzleClient.getSolves(puzzleId).then((solves) => {
+          setSolves(solves);
+        });
+      });
+    } else {
+      puzzleClient.getSolves(puzzleIdFromUrl).then((solves) => {
         setSolves(solves);
       });
-    });
-  }, []);
+    }
+  }, [puzzleIdFromUrl]);
 
   const onSolveFormSubmit = (name: string, rows: SolveRow[]) => {
     if (puzzleId === null) {
