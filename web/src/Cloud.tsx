@@ -32,7 +32,9 @@ const displayTableFromSolves = (solves: Solve[]): DisplayTable => {
       const cell: DisplayCell = { entries: [] };
       for (let solve of solves) {
         if (solve.solveRows[i]) {
-          solvers.add(solve.name);
+          if (solve.solveRows[i].every((item) => item === "G")) {
+            solvers.add(solve.name);
+          }
           const item = solve.solveRows[i][j];
           if (item !== undefined) {
             cell.entries.push({ name: solve.name, item });

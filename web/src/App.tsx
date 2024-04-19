@@ -1,5 +1,4 @@
 import React from "react";
-import logo from "./logo.svg";
 import "./App.css";
 import { PuzzleClient } from "./data/puzzleClient";
 import { Solve, SolveRow } from "./data/interface";
