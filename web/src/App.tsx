@@ -52,10 +52,16 @@ function App() {
   return (
     <div className="App">
       <h1>Puzzle: {puzzleId}</h1>
-      <h2>Solves</h2>
-      <Cloud solves={solves} />
-      <h2>Add Your Solve</h2>
-      <SolveForm onSubmit={onSolveFormSubmit} />
+      <div className="content">
+        <section>
+          <h2>Add Your Solve</h2>
+          <SolveForm onSubmit={onSolveFormSubmit} />
+        </section>
+        <section>
+          <h2>Solves</h2>
+          <Cloud solves={solves} />
+        </section>
+      </div>
     </div>
   );
 }

@@ -12,6 +12,7 @@
 
 .cloud .cell {
   border: 1px solid #ccc;
+  border-radius: 5px;
   display: grid;
   place-content: center;
   aspect-ratio: 1 / 1;

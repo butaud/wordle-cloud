@@ -1,6 +1,8 @@
 import { FC } from "react";
 import { SolveRow } from "./data/interface";
 
+import "./SolveForm.css";
+
 type SolveFormProps = {
   onSubmit: (name: string, solveRows: SolveRow[]) => void;
 };
@@ -35,6 +37,7 @@ const extractSolveRowStrings = (solve: string): string[] => {
 export const SolveForm: FC<SolveFormProps> = ({ onSubmit }) => {
   return (
     <form
+      className="solve-form"
       onSubmit={(e) => {
         e.preventDefault();
         const form = e.target as HTMLFormElement;

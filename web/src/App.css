@@ -36,3 +36,17 @@
     transform: rotate(360deg);
   }
 }
+
+.App .content {
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* for smaller screens */
+@media (max-width: 600px) {
+  .App .content {
+    grid-template-columns: 1fr;
+  }
+}
