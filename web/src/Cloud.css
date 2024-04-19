@@ -1,10 +1,9 @@
 .cloud {
   display: grid;
-  grid-template-columns: repeat(5, 50px) 1fr;
-  grid-template-rows: repeat(6, 50px);
-  grid-gap: 4px;
-  height: 350px;
-  width: 450px;
+  grid-template-columns: repeat(5, 70px) 1fr;
+  grid-template-rows: repeat(6, 70px);
+  grid-gap: 5px;
+  width: 555px;
   margin: 0 auto;
   /* offset to center the grid, ignoring the last column which is 180px wide */
   position: relative;
