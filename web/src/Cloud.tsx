@@ -63,12 +63,13 @@ const displayTableFromSolves = (
 export const Cloud: FC<CloudProps> = ({ solves }) => {
   const [nameFilter, setNameFilter] = useState<string | undefined>();
   const displayTable = displayTableFromSolves(solves, nameFilter);
+  const totalSolves = nameFilter ? solves.filter(solve => solve.name === nameFilter).length : solves.length;
   return (
     <div className="cloud">
       {displayTable.map((row, i) => (
         <Fragment key={i}>
           {row.cells.map((cell, j) => (
-            <SquareCell key={j} cell={cell} totalSolves={solves.length} />
+            <SquareCell key={j} cell={cell} totalSolves={totalSolves} />
           ))}
           <div className="names">
             {row.solvers.map((solver) => (
@@ -94,11 +95,7 @@ type Point = {
 };
 const setPoints: Point[] = [
   {
-    hue: 60,
-    lightness: 100,
-  },
-  {
-    hue: 60,
+    hue: 50,
     lightness: 59,
   },
   {
@@ -110,16 +107,18 @@ const bins = setPoints.length - 1;
 const binDivisor = 2 / bins;
 
 const colorForCell = (items: SolveRowItem[], totalSolves: number): string => {
-  if (items.length === 0) {
+
+  const nonEmptyItems = items.filter((item) => item !== "");
+  if (nonEmptyItems.length === 0) {
     return "white";
   }
 
-  const alpha = items.filter((item) => item !== "").length / totalSolves;
+  const alpha = nonEmptyItems.length / totalSolves;
 
   const cellTotal = (
-    items.map((item) => (item === "G" ? 2 : item === "Y" ? 1 : 0)) as number[]
+    nonEmptyItems.map((item) => (item === "G" ? 2 : item === "Y" ? 1 : 0)) as number[]
   ).reduce((a, b) => a + b, 0);
-  const cellMean = cellTotal / items.length;
+  const cellMean = cellTotal / nonEmptyItems.length;
 
   const bin = Math.floor(cellMean / binDivisor);
   const point1 = setPoints[bin];
