@@ -104,7 +104,7 @@ const setPoints: Point[] = [
   },
 ];
 const bins = setPoints.length - 1;
-const binDivisor = 2 / bins;
+const binDivisor = 1 / bins;
 
 const colorForCell = (items: SolveRowItem[], totalSolves: number): string => {
 
@@ -116,7 +116,7 @@ const colorForCell = (items: SolveRowItem[], totalSolves: number): string => {
   const alpha = nonEmptyItems.length / totalSolves;
 
   const cellTotal = (
-    nonEmptyItems.map((item) => (item === "G" ? 2 : item === "Y" ? 1 : 0)) as number[]
+    nonEmptyItems.map((item) => (item === "G" ? 1 : 0)) as number[]
   ).reduce((a, b) => a + b, 0);
   const cellMean = cellTotal / nonEmptyItems.length;
 
