@@ -95,7 +95,7 @@ type Point = {
 };
 const setPoints: Point[] = [
   {
-    hue: 50,
+    hue: 60,
     lightness: 59,
   },
   {
