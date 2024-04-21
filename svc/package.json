@@ -5,7 +5,8 @@
   "author": "Carter Butaud (cabutaud@microsoft.com)",
   "license": "UNLICENSED",
   "scripts": {
-    "start": "tsc && node bin/server.js",
+    "start": "node bin/server.js",
+    "dev": "tsc && node bin/server.js",
     "test": "tsc && node bin/test/data.js",
     "setup": "node setup.js",
     "ngrok": "ngrok --config ngrok-base.yml,ngrok-local.yml start wordle_cloud",
