@@ -8,6 +8,7 @@
     "start": "node bin/server.js",
     "dev": "tsc && node bin/server.js",
     "test": "tsc && node bin/test/data.js",
+    "compile": "tsc",
     "setup": "node setup.js",
     "ngrok": "ngrok --config ngrok-base.yml,ngrok-local.yml start wordle_cloud"
   },
