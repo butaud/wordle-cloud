@@ -7,7 +7,9 @@ export class PuzzleClient {
   }
 
   async getPuzzle(date: Date): Promise<number> {
-    const dateStr = date.toISOString().split("T")[0];
+    const dateStr = `${date.getFullYear()}-${
+      date.getMonth() + 1
+    }-${date.getDate()}`;
     const response = await fetch(`${this.baseUrl}/puzzle?date=${dateStr}`);
     const puzzleId = await response.json();
     return puzzleId;
