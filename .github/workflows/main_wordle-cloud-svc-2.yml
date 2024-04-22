@@ -15,17 +15,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-
-      - name: Set up Node.js version
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20.x'
-
-      - name: yarn install and build
-        working-directory: ./svc
-        run: |
-          yarn
-          yarn compile
       
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
