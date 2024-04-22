@@ -2,13 +2,15 @@ import express from "express";
 import cors from "cors";
 import { SqlitePuzzleDao } from "./data/sqliteDao";
 import { Solve } from "./data/interface";
+import path from "path";
 
 const app = express();
 app.use(express.json());
 app.use(cors());
 
 (async () => {
-  const sqliteDao = new SqlitePuzzleDao("./prod.db");
+  const dbPath = path.resolve(__dirname, "./prod.db");
+  const sqliteDao = new SqlitePuzzleDao(dbPath);
   await sqliteDao.init();
   app.get("/puzzle", async (req, res) => {
     const date = new Date(req.query.date as string);
