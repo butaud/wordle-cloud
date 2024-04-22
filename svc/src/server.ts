@@ -9,7 +9,7 @@ app.use(express.json());
 app.use(cors());
 
 (async () => {
-  const dbPath = path.resolve(__dirname, "./prod.db");
+  const dbPath = path.resolve("C:/", "mounts", "db", "./prod.db");
   const sqliteDao = new SqlitePuzzleDao(dbPath);
   await sqliteDao.init();
   app.get("/puzzle", async (req, res) => {
