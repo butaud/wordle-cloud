@@ -5,7 +5,9 @@ import { Solve, SolveRow } from "./data/interface";
 import { SolveForm } from "./SolveForm";
 import { Cloud } from "./Cloud";
 
-const puzzleClient = new PuzzleClient("https://standup8f411.ngrok.io");
+const puzzleClient = new PuzzleClient(
+  "https://wordle-cloud-svc-2.azurewebsites.net"
+);
 const date = new Date();
 
 function App() {
