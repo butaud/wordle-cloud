@@ -1,22 +1,35 @@
-.cloud {
-  display: grid;
-  grid-template-columns: repeat(5, 80px) 1fr;
-  grid-template-rows: repeat(6, 80px);
-  grid-gap: 5px;
-  width: 605px;
-  margin: 0 auto;
-  /* offset to center the grid, ignoring the last column which is 180px wide */
-  position: relative;
-  left: 90px;
+:root {
+  --cloud-cell-gap: 5px;
+  --cloud-cell-width: 80px;
+  --cloud-names-width: 180px;
+}
+@media (max-width: 600px) {
+  :root {
+    --cloud-cell-width: 55px;
+    --cloud-names-width: 150px;
+  }
 }
 
-@media (max-width: 600px) {
-  .cloud {
-    grid-template-columns: repeat(5, 55px) 1fr;
-    grid-template-rows: repeat(6, 55px);
-    width: 450px;
-    left: 75px;
-  }
+:root {
+  --cloud-grid-width: calc(
+    5 * var(--cloud-cell-width) + 4 * var(--cloud-cell-gap)
+  );
+  --cloud-width: calc(
+    var(--cloud-grid-width) + var(--cloud-cell-gap) + var(--cloud-names-width)
+  );
+  --cloud-left-offset: calc(var(--cloud-names-width) / 2);
+}
+
+.cloud {
+  display: grid;
+  grid-template-columns: repeat(5, var(--cloud-cell-width)) 1fr;
+  grid-template-rows: repeat(6, var(--cloud-cell-width));
+  grid-gap: var(--cloud-cell-gap);
+  width: var(--cloud-width);
+  margin: 0 auto;
+  /* offset to center the grid, ignoring the last column which is wider */
+  position: relative;
+  left: var(--cloud-left-offset);
 }
 
 .cloud .cell {
@@ -35,4 +48,24 @@
   flex-direction: row;
   align-self: center;
   width: 100%;
+}
+
+.sad-box {
+  width: var(--cloud-width);
+  margin: 20px auto;
+  position: relative;
+  left: var(--cloud-left-offset);
+}
+
+.sad-box .names {
+  display: flex;
+  flex-direction: row;
+  margin-right: calc(var(--cloud-names-width) + var(--cloud-cell-gap));
+  justify-content: center;
+}
+
+.sad-box span {
+  float: left;
+  font-size: 1.2em;
+  cursor: default;
 }

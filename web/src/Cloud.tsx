@@ -22,7 +22,7 @@ type DisplayRow = {
   solvers: string[];
 };
 
-type DisplayTable = DisplayRow[];
+type DisplayTable = { rows: DisplayRow[]; nonSolvers: string[] };
 
 const displayTableFromSolves = (
   solves: Solve[],
@@ -31,7 +31,8 @@ const displayTableFromSolves = (
   const solvesFiltered = solves.filter((solve) => {
     return nameFilter === undefined || solve.name === nameFilter;
   });
-  const table: DisplayTable = [];
+  const rows: DisplayRow[] = [];
+  const successfulSolvers = new Set<string>();
   for (let i = 0; i < 6; i++) {
     const cells: DisplayCell[] = [];
     const solvers = new Set<string>();
@@ -42,6 +43,7 @@ const displayTableFromSolves = (
         if (solve.solveRows[i]) {
           if (solve.solveRows[i].every((item) => item === "G")) {
             solvers.add(solve.name);
+            successfulSolvers.add(solve.name);
           }
         }
       }
@@ -55,37 +57,63 @@ const displayTableFromSolves = (
       }
       cells.push(cell);
     }
-    table.push({ cells, solvers: Array.from(solvers) });
+    rows.push({ cells, solvers: Array.from(solvers) });
   }
-  return table;
+  return {
+    rows,
+    nonSolvers: solves
+      .map((solve) => solve.name)
+      .filter((name) => !successfulSolvers.has(name)),
+  };
 };
 
 export const Cloud: FC<CloudProps> = ({ solves }) => {
   const [nameFilter, setNameFilter] = useState<string | undefined>();
   const displayTable = displayTableFromSolves(solves, nameFilter);
-  const totalSolves = nameFilter ? solves.filter(solve => solve.name === nameFilter).length : solves.length;
+  const totalSolves = nameFilter
+    ? solves.filter((solve) => solve.name === nameFilter).length
+    : solves.length;
   return (
-    <div className="cloud">
-      {displayTable.map((row, i) => (
-        <Fragment key={i}>
-          {row.cells.map((cell, j) => (
-            <SquareCell key={j} cell={cell} totalSolves={totalSolves} />
-          ))}
+    <>
+      <div className="cloud">
+        {displayTable.rows.map((row, i) => (
+          <Fragment key={i}>
+            {row.cells.map((cell, j) => (
+              <SquareCell key={j} cell={cell} totalSolves={totalSolves} />
+            ))}
+            <div className="names">
+              {row.solvers.map((solver) => (
+                <Solver
+                  key={solver}
+                  name={solver}
+                  onHover={() => setNameFilter(solver)}
+                  onLeave={() => setNameFilter(undefined)}
+                  size={row.solvers.length <= 3 ? "regular" : "small"}
+                  bold={solver === nameFilter}
+                />
+              ))}
+            </div>
+          </Fragment>
+        ))}
+      </div>
+      {displayTable.nonSolvers.length > 0 && (
+        <div className="sad-box">
+          <span title="Failed solves">🙁</span>
           <div className="names">
-            {row.solvers.map((solver) => (
+            {displayTable.nonSolvers.map((name) => (
               <Solver
-                key={solver}
-                name={solver}
-                onHover={() => setNameFilter(solver)}
+                key={name}
+                name={name}
+                onHover={() => setNameFilter(name)}
                 onLeave={() => setNameFilter(undefined)}
-                size={row.solvers.length <= 3 ? "regular" : "small"}
-                bold={solver === nameFilter}
+                size={displayTable.nonSolvers.length <= 3 ? "regular" : "small"}
+                bold={name === nameFilter}
               />
             ))}
           </div>
-        </Fragment>
-      ))}
-    </div>
+        </div>
+      )}
+    </>
   );
 };
 
@@ -107,7 +135,6 @@ const bins = setPoints.length - 1;
 const binDivisor = 1 / bins;
 
 const colorForCell = (items: SolveRowItem[], totalSolves: number): string => {
-
   const nonEmptyItems = items.filter((item) => item !== "");
   if (nonEmptyItems.length === 0) {
     return "white";
