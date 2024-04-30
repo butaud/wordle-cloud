@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import { PuzzleClient } from "./data/puzzleClient";
 import { Solve, SolveRow } from "./data/interface";
@@ -17,27 +17,23 @@ function App() {
   const puzzleIdFromUrl = puzzleIdFromUrlStr
     ? parseInt(puzzleIdFromUrlStr)
     : null;
-  const [puzzleId, setPuzzleId] = React.useState<number | null>(
-    puzzleIdFromUrl
-  );
-  const [solves, setSolves] = React.useState<Solve[]>([]);
-  React.useEffect(() => {
-    if (!puzzleIdFromUrl) {
-      puzzleClient.getPuzzle(date).then((puzzleId) => {
-        setPuzzleId(puzzleId);
-        puzzleClient.getSolves(puzzleId).then((solves) => {
-          setSolves(solves);
-        });
-      });
-    } else {
-      puzzleClient.getSolves(puzzleIdFromUrl).then((solves) => {
-        setSolves(solves);
-      });
-    }
+  const [todayPuzzleId, setTodayPuzzleId] = useState<number | null>(null);
+  const [solves, setSolves] = useState<Solve[] | null>(null);
+  useEffect(() => {
+    (async () => {
+      const todayPuzzleId = await puzzleClient.getPuzzle(date);
+      setTodayPuzzleId(todayPuzzleId);
+      const solves = await puzzleClient.getSolves(
+        puzzleIdFromUrl || todayPuzzleId
+      );
+      setSolves(solves);
+    })();
   }, [puzzleIdFromUrl]);
 
+  const puzzleId = puzzleIdFromUrl || todayPuzzleId;
+
   const onSolveFormSubmit = (name: string, rows: SolveRow[]) => {
-    if (puzzleId === null) {
+    if (puzzleId === null || solves === null) {
       return;
     }
     const solve: Omit<Solve, "id"> = {
@@ -49,23 +45,22 @@ function App() {
       setSolves([...solves, newSolve]);
     });
   };
+  const puzzleIdLoading = puzzleId === null || todayPuzzleId === null;
 
   return (
     <div className="App">
-      <h1>Puzzle: {puzzleId}</h1>
-      {puzzleId !== null && (
-        <div className="nav">
-          {puzzleId !== 1 && (
-            <a href={`?puzzleId=${puzzleId - 1}`}>{`<< ${puzzleId - 1}`}</a>
-          )}
-          {puzzleIdFromUrl !== null && (
-            <>
-              <a href={"."}>{`Today`}</a>
-              <a href={`?puzzleId=${puzzleId + 1}`}>{`${puzzleId + 1} >>`}</a>
-            </>
-          )}
-        </div>
-      )}
+      <h1>Puzzle: {puzzleId || "Loading..."}</h1>
+      <div className="nav">
+        {!puzzleIdLoading && puzzleId !== 1 && (
+          <a href={`?puzzleId=${puzzleId - 1}`}>{`<< ${puzzleId - 1}`}</a>
+        )}
+        {!puzzleIdLoading && puzzleId !== todayPuzzleId && (
+          <>
+            <a href={"."}>{`Today`}</a>
+            <a href={`?puzzleId=${puzzleId + 1}`}>{`${puzzleId + 1} >>`}</a>
+          </>
+        )}
+      </div>
       <div className="content">
         <section>
           <h2>Add Your Solve</h2>

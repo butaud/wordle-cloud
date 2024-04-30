@@ -5,7 +5,7 @@ import "./Cloud.css";
 import { Solver } from "./Solver";
 
 export type CloudProps = {
-  solves: Solve[];
+  solves: Solve[] | null;
 };
 
 type SolverCellEntry = {
@@ -69,6 +69,7 @@ const displayTableFromSolves = (
 
 export const Cloud: FC<CloudProps> = ({ solves }) => {
   const [nameFilter, setNameFilter] = useState<string | undefined>();
+  solves = solves ?? [];
   const displayTable = displayTableFromSolves(solves, nameFilter);
   const totalSolves = nameFilter
     ? solves.filter((solve) => solve.name === nameFilter).length
