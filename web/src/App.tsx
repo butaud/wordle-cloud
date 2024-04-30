@@ -1,14 +1,13 @@
-import { useEffect, useState } from "react";
 import "./App.css";
 import { PuzzleClient } from "./data/puzzleClient";
 import { Solve, SolveRow } from "./data/interface";
 import { SolveForm } from "./SolveForm";
 import { Cloud } from "./Cloud";
+import { usePuzzleData } from "./hooks/use-puzzle-data";
 
 const puzzleClient = new PuzzleClient(
   "https://wordle-cloud-svc-2.azurewebsites.net"
 );
-const date = new Date();
 
 function App() {
   const puzzleIdFromUrlStr = new URLSearchParams(window.location.search).get(
@@ -17,20 +16,11 @@ function App() {
   const puzzleIdFromUrl = puzzleIdFromUrlStr
     ? parseInt(puzzleIdFromUrlStr)
     : null;
-  const [todayPuzzleId, setTodayPuzzleId] = useState<number | null>(null);
-  const [solves, setSolves] = useState<Solve[] | null>(null);
-  useEffect(() => {
-    (async () => {
-      const todayPuzzleId = await puzzleClient.getPuzzle(date);
-      setTodayPuzzleId(todayPuzzleId);
-      const solves = await puzzleClient.getSolves(
-        puzzleIdFromUrl || todayPuzzleId
-      );
-      setSolves(solves);
-    })();
-  }, [puzzleIdFromUrl]);
 
-  const puzzleId = puzzleIdFromUrl || todayPuzzleId;
+  const { puzzleId, isToday, solves, addSolve } = usePuzzleData(
+    puzzleClient,
+    puzzleIdFromUrl
+  );
 
   const onSolveFormSubmit = (name: string, rows: SolveRow[]) => {
     if (puzzleId === null || solves === null) {
@@ -41,20 +31,17 @@ function App() {
       name,
       solveRows: rows,
     };
-    puzzleClient.createSolve(puzzleId, solve).then((newSolve) => {
-      setSolves([...solves, newSolve]);
-    });
+    addSolve(solve);
   };
-  const puzzleIdLoading = puzzleId === null || todayPuzzleId === null;
 
   return (
     <div className="App">
       <h1>Puzzle: {puzzleId || "Loading..."}</h1>
       <div className="nav">
-        {!puzzleIdLoading && puzzleId !== 1 && (
+        {puzzleId !== null && puzzleId !== 1 && (
           <a href={`?puzzleId=${puzzleId - 1}`}>{`<< ${puzzleId - 1}`}</a>
         )}
-        {!puzzleIdLoading && puzzleId !== todayPuzzleId && (
+        {puzzleId !== null && !isToday && (
           <>
             <a href={"."}>{`Today`}</a>
             <a href={`?puzzleId=${puzzleId + 1}`}>{`${puzzleId + 1} >>`}</a>
