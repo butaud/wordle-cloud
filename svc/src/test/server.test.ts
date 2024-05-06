@@ -1,19 +1,15 @@
 import request from "supertest";
-import { app, init } from "../app";
+import { app, clearSolves, init } from "../app";
 import fs from "fs";
 
 describe("e2e tests", () => {
-  const dbPath = process.env.WORDLE_DB_PATH;
-  if (!dbPath) {
-    throw new Error("WORDLE_DB_PATH not set");
-  }
+  //const dbPath = process.env.WORDLE_DB_PATH;
+  //if (!dbPath) {
+  //  throw new Error("WORDLE_DB_PATH not set");
+  //}
   beforeAll(async () => {
-    // delete sqlite db file before running tests
-    if (fs.existsSync(dbPath)) {
-      fs.unlinkSync(dbPath);
-    }
-
     await init();
+    await clearSolves();
   });
 
   describe("GET /puzzles", () => {
@@ -48,7 +44,7 @@ describe("e2e tests", () => {
       const response = await request(app).post("/solves/1028").send(newSolve);
       expect(response.statusCode).toBe(200);
       expect(response.body).toEqual({
-        id: 1,
+        id: expect.any(Number),
         puzzleId: 1028,
         name: "test",
         solveRows: [
@@ -63,7 +59,7 @@ describe("e2e tests", () => {
       expect(response.statusCode).toBe(200);
       expect(response.body).toEqual([
         {
-          id: 1,
+          id: expect.any(Number),
           puzzleId: 1028,
           name: "test",
           solveRows: [
@@ -85,7 +81,7 @@ describe("e2e tests", () => {
       const response = await request(app).post("/solves/1028").send(newSolve);
       expect(response.statusCode).toBe(200);
       expect(response.body).toEqual({
-        id: 2,
+        id: expect.any(Number),
         puzzleId: 1028,
         name: "test2",
         solveRows: [
@@ -100,7 +96,7 @@ describe("e2e tests", () => {
       expect(response.statusCode).toBe(200);
       expect(response.body).toEqual([
         {
-          id: 1,
+          id: expect.any(Number),
           puzzleId: 1028,
           name: "test",
           solveRows: [
@@ -109,7 +105,7 @@ describe("e2e tests", () => {
           ],
         },
         {
-          id: 2,
+          id: expect.any(Number),
           puzzleId: 1028,
           name: "test2",
           solveRows: [

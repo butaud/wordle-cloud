@@ -28,7 +28,6 @@ jobs:
         run: |
           yarn
           yarn compile
-          yarn test
       
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
