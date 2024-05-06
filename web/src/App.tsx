@@ -5,7 +5,9 @@ import { SolveForm } from "./SolveForm";
 import { Cloud } from "./Cloud";
 import { usePuzzleData } from "./hooks/use-puzzle-data";
 
-const puzzleClient = new PuzzleClient("http://localhost:3001");
+const puzzleClient = new PuzzleClient(
+  "https://wordle-cloud-svc-2.azurewebsites.net"
+);
 
 function App() {
   const puzzleIdFromUrlStr = new URLSearchParams(window.location.search).get(
