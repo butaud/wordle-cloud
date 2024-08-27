@@ -10,7 +10,8 @@ const puzzleClient = new PuzzleClient(
 );
 
 function App() {
-  const puzzleIdFromUrlStr = new URLSearchParams(window.location.search).get(
+  const parsedSearchParams = new URLSearchParams(window.location.search);
+  const puzzleIdFromUrlStr = parsedSearchParams.get(
     "puzzleId"
   );
   const puzzleIdFromUrl = puzzleIdFromUrlStr
@@ -22,6 +23,8 @@ function App() {
     puzzleIdFromUrl
   );
 
+  const solveTextFromUrl = parsedSearchParams.get("text");
+
   const onSolveFormSubmit = (name: string, rows: SolveRow[]) => {
     if (puzzleId === null || solves === null) {
       return;
@@ -32,6 +35,7 @@ function App() {
       solveRows: rows,
     };
     addSolve(solve);
+    
   };
 
   return (
@@ -51,7 +55,7 @@ function App() {
       <div className="content">
         <section>
           <h2>Add Your Solve</h2>
-          <SolveForm onSubmit={onSolveFormSubmit} />
+          <SolveForm solveTextFromUrl={solveTextFromUrl} onSubmit={onSolveFormSubmit} />
         </section>
         <section>
           <h2>Solves</h2>

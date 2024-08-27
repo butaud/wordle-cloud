@@ -4,6 +4,7 @@ import { SolveRow } from "./data/interface";
 import "./SolveForm.css";
 
 type SolveFormProps = {
+  solveTextFromUrl: string | null;
   onSubmit: (name: string, solveRows: SolveRow[]) => void;
 };
 
@@ -34,7 +35,7 @@ const extractSolveRowStrings = (solve: string): string[] => {
     );
 };
 
-export const SolveForm: FC<SolveFormProps> = ({ onSubmit }) => {
+export const SolveForm: FC<SolveFormProps> = ({ onSubmit, solveTextFromUrl }) => {
   const [error, setError] = useState<string | null>(null);
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -73,7 +74,7 @@ export const SolveForm: FC<SolveFormProps> = ({ onSubmit }) => {
       </label>
       <label>
         Solve:
-        <textarea name="solve" />
+        <textarea name="solve" defaultValue={solveTextFromUrl ?? undefined} />
       </label>
       <button type="submit">Submit</button>
     </form>

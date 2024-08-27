@@ -19,14 +19,14 @@
     }
   ],
   "start_url": ".",
-  "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#ffffff",
+  "scope": ".",
   "share_target": {
-    "action": "/",
+    "action": ".",
     "method": "GET",
     "params": {
-      "text:": "text"
+      "text": "text"
     }
   }
 }
