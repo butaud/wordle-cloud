@@ -5,6 +5,7 @@ import "./SolveForm.css";
 
 type SolveFormProps = {
   solveTextFromUrl: string | null;
+  cachedName: string | null;
   onSubmit: (name: string, solveRows: SolveRow[]) => void;
 };
 
@@ -35,7 +36,7 @@ const extractSolveRowStrings = (solve: string): string[] => {
     );
 };
 
-export const SolveForm: FC<SolveFormProps> = ({ onSubmit, solveTextFromUrl }) => {
+export const SolveForm: FC<SolveFormProps> = ({ onSubmit, solveTextFromUrl, cachedName }) => {
   const [error, setError] = useState<string | null>(null);
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -70,7 +71,7 @@ export const SolveForm: FC<SolveFormProps> = ({ onSubmit, solveTextFromUrl }) =>
       {error && <p className="error">{error}</p>}
       <label>
         Name:
-        <input type="text" name="name" />
+        <input type="text" name="name" defaultValue={cachedName ?? undefined} />
       </label>
       <label>
         Solve:

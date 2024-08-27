@@ -8,6 +8,7 @@ import { usePuzzleData } from "./hooks/use-puzzle-data";
 const puzzleClient = new PuzzleClient(
   "https://wordle-cloud-svc-2.azurewebsites.net"
 );
+const LS_NAME_KEY = "cachedName";
 
 function App() {
   const parsedSearchParams = new URLSearchParams(window.location.search);
@@ -25,10 +26,13 @@ function App() {
 
   const solveTextFromUrl = parsedSearchParams.get("text");
 
+  const cachedName = window.localStorage.getItem(LS_NAME_KEY);
+
   const onSolveFormSubmit = (name: string, rows: SolveRow[]) => {
     if (puzzleId === null || solves === null) {
       return;
     }
+    window.localStorage.setItem(LS_NAME_KEY, name);
     const solve: Omit<Solve, "id"> = {
       puzzleId,
       name,
@@ -55,7 +59,7 @@ function App() {
       <div className="content">
         <section>
           <h2>Add Your Solve</h2>
-          <SolveForm solveTextFromUrl={solveTextFromUrl} onSubmit={onSolveFormSubmit} />
+          <SolveForm solveTextFromUrl={solveTextFromUrl} cachedName={cachedName} onSubmit={onSolveFormSubmit} />
         </section>
         <section>
           <h2>Solves</h2>
