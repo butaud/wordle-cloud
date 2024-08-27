@@ -18,8 +18,9 @@
       "sizes": "512x512"
     }
   ],
+  "display": "standalone",
   "start_url": ".",
-  "theme_color": "#000000",
+  "theme_color": "#69d100",
   "background_color": "#ffffff",
   "scope": ".",
   "share_target": {
