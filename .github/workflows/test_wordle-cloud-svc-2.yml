@@ -38,7 +38,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     environment:
-      name: 'Test'
+      name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
       id-token: write
@@ -52,9 +52,9 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v1
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_B15CF7A9FE9B44E4A480AA3FDAADF00D }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_4D0D561E95DF485FB012F4802B3D7B4D }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_D3076E7F8D0E497CA3DA4A217405F149 }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_2912DA36E9E0460EAC3595DBAA1F5C34 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_CA84FE9907FA44F2B14C2B85AAC6E99C }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_D631C26306C740DB9D0303FED07F11A9 }}
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
