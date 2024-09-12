@@ -5,16 +5,16 @@ import { SolveForm } from "./SolveForm";
 import { Cloud } from "./Cloud";
 import { usePuzzleData } from "./hooks/use-puzzle-data";
 
-const puzzleClient = new PuzzleClient(
-  "https://wordle-cloud-svc-2.azurewebsites.net"
-);
+const backendUrl =
+  process.env.NODE_ENV === "development"
+    ? "https://wordle-cloud-svc-test-daecfveug2epchbg.eastus-01.azurewebsites.net"
+    : "https://wordle-cloud-svc-2.azurewebsites.net";
+const puzzleClient = new PuzzleClient(backendUrl);
 const LS_NAME_KEY = "cachedName";
 
 function App() {
   const parsedSearchParams = new URLSearchParams(window.location.search);
-  const puzzleIdFromUrlStr = parsedSearchParams.get(
-    "puzzleId"
-  );
+  const puzzleIdFromUrlStr = parsedSearchParams.get("puzzleId");
   const puzzleIdFromUrl = puzzleIdFromUrlStr
     ? parseInt(puzzleIdFromUrlStr)
     : null;
@@ -39,7 +39,6 @@ function App() {
       solveRows: rows,
     };
     addSolve(solve);
-    
   };
 
   return (
@@ -59,7 +58,11 @@ function App() {
       <div className="content">
         <section>
           <h2>Add Your Solve</h2>
-          <SolveForm solveTextFromUrl={solveTextFromUrl} cachedName={cachedName} onSubmit={onSolveFormSubmit} />
+          <SolveForm
+            solveTextFromUrl={solveTextFromUrl}
+            cachedName={cachedName}
+            onSubmit={onSolveFormSubmit}
+          />
         </section>
         <section>
           <h2>Solves</h2>
