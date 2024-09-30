@@ -10,6 +10,7 @@ type SolveFormProps = {
 };
 
 const blank = "⬜";
+const blankDark = "⬛";
 const green = "🟩";
 const yellow = "🟨";
 
@@ -32,11 +33,18 @@ const extractSolveRowStrings = (solve: string): string[] => {
     .map((row) => row.trim())
     .filter(
       (row) =>
-        row.includes(green) || row.includes(yellow) || row.includes(blank)
+        row.includes(green) ||
+        row.includes(yellow) ||
+        row.includes(blank) ||
+        row.includes(blankDark)
     );
 };
 
-export const SolveForm: FC<SolveFormProps> = ({ onSubmit, solveTextFromUrl, cachedName }) => {
+export const SolveForm: FC<SolveFormProps> = ({
+  onSubmit,
+  solveTextFromUrl,
+  cachedName,
+}) => {
   const [error, setError] = useState<string | null>(null);
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
